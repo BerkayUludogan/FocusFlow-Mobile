@@ -1,0 +1,20 @@
+{
+  "appName": "FocusFlow",
+  "auth": {
+    "loginTitle": "FocusFlow",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "loginButton": "Login",
+    "loginSuccess": "Login successful.",
+    "loginFailed": "Login failed.",
+    "logoutFailed": "Logout failed.",
+    "sessionCheckFailed": "Session could not be checked.",
+    "emptyLoginResponse": "Login response is empty."
+  },
+  "network": {
+  "unknownError": "An error occurred.",
+  "unauthorized": "Session expired. Please login again.",
+  "tooManyRequests": "Too many requests. Please wait a moment.",
+  "connectionError": "An error occurred while connecting to the server."
+  }
+}

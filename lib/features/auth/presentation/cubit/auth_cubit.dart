@@ -1,10 +1,10 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:focusflow_mobile/product/state/base_cubit.dart';
 import '../../data/models/login_request.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../domain/constants/auth_error_messages.dart';
 import 'auth_state.dart';
 
-class AuthCubit extends Cubit<AuthState> {
+class AuthCubit extends BaseCubit<AuthState> {
   AuthCubit({required this._authRepository}) : super(const AuthState());
 
   final AuthRepository _authRepository;
@@ -24,7 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
     } catch (_) {
       emit(
-        const AuthState(
+        AuthState(
           status: AuthStatus.failure,
           errorMessage: AuthErrorMessages.sessionCheckFailed,
         ),
@@ -61,9 +61,11 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(const AuthState(status: AuthStatus.unauthenticated));
     } catch (_) {
-      const AuthState(
-        status: AuthStatus.failure,
-        errorMessage: AuthErrorMessages.logoutFailed,
+      emit(
+        AuthState(
+          status: AuthStatus.failure,
+          errorMessage: AuthErrorMessages.logoutFailed,
+        ),
       );
     }
   }

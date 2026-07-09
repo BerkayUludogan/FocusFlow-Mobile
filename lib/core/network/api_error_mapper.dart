@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:focusflow_mobile/core/network/api_exception.dart';
+import 'package:focusflow_mobile/product/localization/locale_keys.dart';
 
 class ApiErrorMapper {
   const ApiErrorMapper._();
@@ -19,11 +21,11 @@ class ApiErrorMapper {
     if (data is Map<String, dynamic>) {
       final errors = data['errors'];
 
-      if (error is List) {
+      if (errors is List) {
         return ApiException(
           message: errors.isNotEmpty
               ? errors.first.toString()
-              : 'Bir hata oluştu.',
+              : LocaleKeys.networkUnknownError.tr(),
           statusCode: statusCode,
           errors: errors.map((error) => error.toString()).toList(),
         );
@@ -39,19 +41,19 @@ class ApiErrorMapper {
       }
     }
     if (statusCode == 401) {
-      return const ApiException(
-        message: 'Oturum süresi doldu. Lütfen tekrar giriş yap.',
+      return ApiException(
+        message: LocaleKeys.networkUnauthorized.tr(),
         statusCode: 401,
       );
     }
     if (statusCode == 429) {
-      return const ApiException(
-        message: 'Çok fazla istek gönderdin. Lütfen biraz bekle.',
+      return ApiException(
+        message: LocaleKeys.networkTooManyRequests.tr(),
         statusCode: 429,
       );
     }
     return ApiException(
-      message: error.message ?? 'Sunucuya bağlanırken bir hata oluştu.',
+      message: error.message ?? LocaleKeys.networkConnectionError.tr(),
       statusCode: statusCode,
     );
   }

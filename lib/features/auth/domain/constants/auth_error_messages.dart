@@ -1,7 +1,11 @@
-class AuthErrorMessages {
-  AuthErrorMessages._();
+import 'package:easy_localization/easy_localization.dart';
 
-  static const String loginFailed = 'Giriş Yapılamadı.';
-  static const String logoutFailed = 'Çıkış Yapılamadı.';
-  static const String sessionCheckFailed = 'Oturum kontrol edilemedi';
+import '../../../../product/localization/locale_keys.dart';
+
+class AuthErrorMessages {
+  const AuthErrorMessages._();
+
+  static String get loginFailed => LocaleKeys.authLoginFailed.tr();
+  static String get logoutFailed => LocaleKeys.authLogoutFailed.tr();
+  static String get sessionCheckFailed => LocaleKeys.authSessionCheckFailed.tr();
 }

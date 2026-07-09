@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:focusflow_mobile/core/network/api_client.dart';
 import 'package:focusflow_mobile/core/network/api_endpoints.dart';
 import 'package:focusflow_mobile/core/storage/token_storage.dart';
 import 'package:focusflow_mobile/features/auth/data/models/login_request.dart';
 import 'package:focusflow_mobile/features/auth/data/models/login_response.dart';
+import 'package:focusflow_mobile/product/localization/locale_keys.dart';
 
 class AuthRepository {
   final ApiClient _apiClient;
@@ -19,7 +21,7 @@ class AuthRepository {
     final data = response.data;
 
     if (data == null) {
-      throw Exception('Login response is empty');
+      throw Exception(LocaleKeys.authEmptyLoginResponse.tr());
     }
 
     final loginResponse = LoginResponse.fromJson(data);

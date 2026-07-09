@@ -1,0 +1,20 @@
+{
+  "appName": "FocusFlow",
+  "auth": {
+    "loginTitle": "FocusFlow",
+    "emailLabel": "Email",
+    "passwordLabel": "Şifre",
+    "loginButton": "Giriş Yap",
+    "loginSuccess": "Giriş başarılı.",
+    "loginFailed": "Giriş yapılamadı.",
+    "logoutFailed": "Çıkış yapılamadı.",
+    "sessionCheckFailed": "Oturum kontrol edilemedi.",
+    "emptyLoginResponse": "Giriş yanıtı boş döndü."
+  },
+  "network": {
+  "unknownError": "Bir hata oluştu.",
+  "unauthorized": "Oturum süresi doldu. Lütfen tekrar giriş yap.",
+  "tooManyRequests": "Çok fazla istek gönderdin. Lütfen biraz bekle.",
+  "connectionError": "Sunucuya bağlanırken bir hata oluştu."
+  }
+}

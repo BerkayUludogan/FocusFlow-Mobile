@@ -1,6 +1,8 @@
 class AppConstants {
   const AppConstants._();
-  
-  // Android emulator localhost için 10.0.2.2 kullanılır.
-  static const String developmentBaseUrl = 'https://10.0.2.2:7012';
+
+  static const String baseUrl = String.fromEnvironment(
+    'BASE_URL',
+    defaultValue: 'http://10.0.2.2:5190',
+  );
 }

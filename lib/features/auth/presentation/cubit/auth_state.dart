@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 enum AuthStatus { initial, loading, authenticated, unauthenticated, failure }
 
@@ -15,10 +16,10 @@ class AuthState extends Equatable {
   @override
   List<Object?> get props => [status, errorMessage];
 
-  AuthState copyWith({AuthStatus? status, String? errorMessage}) {
+  AuthState copyWith({AuthStatus? status, ValueGetter<String?>? errorMessage}) {
     return AuthState(
       status: status ?? this.status,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: errorMessage != null ? errorMessage() : this.errorMessage,
     );
   }
 }

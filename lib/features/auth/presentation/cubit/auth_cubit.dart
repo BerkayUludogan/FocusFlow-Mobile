@@ -1,3 +1,4 @@
+import 'package:focusflow_mobile/core/network/api_exception.dart';
 import 'package:focusflow_mobile/product/state/base_cubit.dart';
 import '../../data/models/login_request.dart';
 import '../../data/repositories/auth_repository.dart';
@@ -45,7 +46,7 @@ class AuthCubit extends BaseCubit<AuthState> {
       emit(
         AuthState(
           status: AuthStatus.failure,
-          errorMessage: error.toString().isNotEmpty
+          errorMessage: error is ApiException
               ? error.toString()
               : AuthErrorMessages.loginFailed,
         ),

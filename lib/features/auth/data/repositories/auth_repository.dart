@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:focusflow_mobile/core/network/api_client.dart';
 import 'package:focusflow_mobile/core/network/api_endpoints.dart';
+import 'package:focusflow_mobile/core/network/api_exception.dart';
 import 'package:focusflow_mobile/core/storage/token_storage.dart';
 import 'package:focusflow_mobile/features/auth/data/models/login_request.dart';
 import 'package:focusflow_mobile/features/auth/data/models/login_response.dart';
@@ -21,7 +22,7 @@ class AuthRepository {
     final data = response.data;
 
     if (data == null) {
-      throw Exception(LocaleKeys.authEmptyLoginResponse.tr());
+      throw ApiException(message: LocaleKeys.authEmptyLoginResponse.tr());
     }
 
     final loginResponse = LoginResponse.fromJson(data);
@@ -34,7 +35,9 @@ class AuthRepository {
   }
 
   Future<void> logout() async {
-    await _apiClient.post<void>(ApiEndpoints.logout);
+    try {
+      await _apiClient.post<void>(ApiEndpoints.logout);
+    } catch (_) {}
     await _tokenStorage.clear();
   }
 

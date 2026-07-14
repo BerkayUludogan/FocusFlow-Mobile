@@ -9,12 +9,19 @@
     "loginFailed": "Giriş yapılamadı.",
     "logoutFailed": "Çıkış yapılamadı.",
     "sessionCheckFailed": "Oturum kontrol edilemedi.",
-    "emptyLoginResponse": "Giriş yanıtı boş döndü."
+    "emptyLoginResponse": "Giriş yanıtı boş döndü.",
+    "emailRequired": "Email zorunludur.",
+    "emailInvalid": "Geçerli bir email adresi girin.",
+    "passwordRequired": "Şifre zorunludur.",
+    "passwordTooShort": "Şifre en az 8 karakter olmalı."
   },
   "network": {
-  "unknownError": "Bir hata oluştu.",
-  "unauthorized": "Oturum süresi doldu. Lütfen tekrar giriş yap.",
-  "tooManyRequests": "Çok fazla istek gönderdin. Lütfen biraz bekle.",
-  "connectionError": "Sunucuya bağlanırken bir hata oluştu."
+    "unknownError": "Bir hata oluştu.",
+    "unauthorized": "Oturum süresi doldu. Lütfen tekrar giriş yap.",
+    "tooManyRequests": "Çok fazla istek gönderdin. Lütfen biraz bekle.",
+    "connectionError": "Sunucuya bağlanırken bir hata oluştu."
+  },
+  "routing": {
+    "pageNotFound": "Sayfa bulunamadı."
   }
 }

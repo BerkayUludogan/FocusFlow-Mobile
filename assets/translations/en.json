@@ -9,12 +9,19 @@
     "loginFailed": "Login failed.",
     "logoutFailed": "Logout failed.",
     "sessionCheckFailed": "Session could not be checked.",
-    "emptyLoginResponse": "Login response is empty."
+    "emptyLoginResponse": "Login response is empty.",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Please enter a valid email address.",
+    "passwordRequired": "Password is required.",
+    "passwordTooShort": "Password must be at least 8 characters."
   },
   "network": {
-  "unknownError": "An error occurred.",
-  "unauthorized": "Session expired. Please login again.",
-  "tooManyRequests": "Too many requests. Please wait a moment.",
-  "connectionError": "An error occurred while connecting to the server."
+    "unknownError": "An error occurred.",
+    "unauthorized": "Session expired. Please login again.",
+    "tooManyRequests": "Too many requests. Please wait a moment.",
+    "connectionError": "An error occurred while connecting to the server."
+  },
+  "routing": {
+    "pageNotFound": "Page not found."
   }
 }

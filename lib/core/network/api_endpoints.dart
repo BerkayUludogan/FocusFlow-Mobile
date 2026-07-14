@@ -9,7 +9,7 @@ class ApiEndpoints {
 
   static const String verifyEmail = "/api/auth/verify-email";
   static const String resendVerificationCode =
-      "/api/auth/resend-verification-code";
+      "/api/auth/resend-email-verification-code";
 
   static const String forgotPassword = "/api/auth/forgot-password";
   static const String resetPassword = "/api/auth/reset-password";

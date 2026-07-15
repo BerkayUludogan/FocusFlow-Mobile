@@ -16,7 +16,26 @@
     "passwordRequired": "Şifre zorunludur.",
     "passwordTooShort": "Şifre en az 8 karakter olmalı.",
     "verifyEmailFailed": "E-posta doğrulanamadı.",
-    "resendCodeFailed": "Kod tekrar gönderilemedi."
+    "resendCodeFailed": "Kod tekrar gönderilemedi.",
+    "registerTitle": "Hesap Oluştur",
+    "displayNameLabel": "Ad Soyad",
+    "displayNameRequired": "Ad soyad zorunludur.",
+    "displayNameTooShort": "Ad soyad en az 2 karakter olmalı.",
+    "confirmPasswordLabel": "Şifre Tekrar",
+    "passwordMismatch": "Şifreler eşleşmiyor.",
+    "registerButton": "Kayıt Ol",
+    "haveAccount": "Zaten hesabın var mı? Giriş yap",
+    "noAccount": "Hesabın yok mu? Kayıt ol",
+    "verifyEmailTitle": "E-postanı Doğrula",
+    "verifyEmailSubtitle": "{} adresine bir doğrulama kodu gönderdik.",
+    "codeLabel": "Doğrulama Kodu",
+    "codeRequired": "Kod zorunludur.",
+    "verifyButton": "Doğrula",
+    "resendCode": "Kodu tekrar gönder",
+    "emailVerified": "E-posta doğrulandı, şimdi giriş yapabilirsin.",
+    "codeResent": "Kod tekrar gönderildi.",
+    "resendCodeIn": "Kodu tekrar gönder ({}sn)"
+
   },
   "network": {
     "unknownError": "Bir hata oluştu.",

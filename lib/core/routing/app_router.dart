@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:focusflow_mobile/features/auth/presentation/pages/email_verification_page.dart';
+import 'package:focusflow_mobile/features/auth/presentation/pages/register_page.dart';
 import 'package:focusflow_mobile/product/localization/locale_keys.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,7 +38,7 @@ class AppRouter {
             return null;
           }
 
-          if (authStatus == AuthStatus.authenticated) { 
+          if (authStatus == AuthStatus.authenticated) {
             return isAuthRoute || isSplash ? AppRoutes.home : null;
           }
 
@@ -62,6 +64,15 @@ class AppRouter {
           GoRoute(
             path: AppRoutes.home,
             builder: (context, state) => const HomePage(),
+          ),
+          GoRoute(
+            path: AppRoutes.register,
+            builder: (context, state) => const RegisterPage(),
+          ),
+          GoRoute(
+            path: AppRoutes.verifyEmail,
+            builder: (context, state) =>
+                EmailVerificationPage(email: state.extra as String),
           ),
         ],
       );

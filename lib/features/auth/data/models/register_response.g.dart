@@ -13,11 +13,3 @@ RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) =>
       displayName: json['displayName'] as String,
       createdAtUtc: DateTime.parse(json['createdAtUtc'] as String),
     );
-
-Map<String, dynamic> _$RegisterResponseToJson(RegisterResponse instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'email': instance.email,
-      'displayName': instance.displayName,
-      'createdAtUtc': instance.createdAtUtc.toIso8601String(),
-    };

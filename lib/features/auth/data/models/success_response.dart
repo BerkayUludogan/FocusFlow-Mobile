@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'success_response.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class SuccessResponse {
   SuccessResponse({required this.success});
 

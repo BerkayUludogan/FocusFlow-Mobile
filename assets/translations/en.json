@@ -7,13 +7,16 @@
     "loginButton": "Login",
     "loginSuccess": "Login successful.",
     "loginFailed": "Login failed.",
+    "registerFailed": "Register failed.",
     "logoutFailed": "Logout failed.",
     "sessionCheckFailed": "Session could not be checked.",
-    "emptyLoginResponse": "Login response is empty.",
+    "emptyResponse": "Response is empty.",
     "emailRequired": "Email is required.",
     "emailInvalid": "Please enter a valid email address.",
     "passwordRequired": "Password is required.",
-    "passwordTooShort": "Password must be at least 8 characters."
+    "passwordTooShort": "Password must be at least 8 characters.",
+    "verifyEmailFailed": "Email could not be verified.",
+    "resendCodeFailed": "Could not resend the code."
   },
   "network": {
     "unknownError": "An error occurred.",

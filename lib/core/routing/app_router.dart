@@ -16,12 +16,17 @@ class AppRouter {
     : router = GoRouter(
         initialLocation: AppRoutes.splash,
         refreshListenable: GoRouterRefreshStream(authCubit.stream),
+
         redirect: (BuildContext context, GoRouterState state) {
           final authStatus = authCubit.state.status;
           final location = state.uri.path;
 
           final isSplash = location == AppRoutes.splash;
           final isLogin = location == AppRoutes.login;
+
+          final isRegister = location == AppRoutes.register;
+          final isVerifyEmail = location == AppRoutes.verifyEmail;
+          final isAuthRoute = isLogin || isRegister || isVerifyEmail;
 
           if (authStatus == AuthStatus.initial) {
             return isSplash ? null : AppRoutes.splash;
@@ -31,13 +36,13 @@ class AppRouter {
             return null;
           }
 
-          if (authStatus == AuthStatus.authenticated) {
-            return isLogin || isSplash ? AppRoutes.home : null;
+          if (authStatus == AuthStatus.authenticated) { 
+            return isAuthRoute || isSplash ? AppRoutes.home : null;
           }
 
           if (authStatus == AuthStatus.unauthenticated ||
               authStatus == AuthStatus.failure) {
-            return isLogin ? null : AppRoutes.login;
+            return isAuthRoute ? null : AppRoutes.login;
           }
 
           return null;
@@ -70,6 +75,8 @@ class AppRoutes {
   static const String splash = '/';
   static const String login = '/login';
   static const String home = '/home';
+  static const String register = '/register';
+  static const String verifyEmail = '/verify-email';
 }
 
 class GoRouterRefreshStream extends ChangeNotifier {

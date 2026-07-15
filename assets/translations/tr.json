@@ -7,13 +7,16 @@
     "loginButton": "Giriş Yap",
     "loginSuccess": "Giriş başarılı.",
     "loginFailed": "Giriş yapılamadı.",
+    "registerFailed": "Kayıt oluşturulamadı.",
     "logoutFailed": "Çıkış yapılamadı.",
     "sessionCheckFailed": "Oturum kontrol edilemedi.",
-    "emptyLoginResponse": "Giriş yanıtı boş döndü.",
+    "emptyResponse": "Yanıtı boş döndü.",
     "emailRequired": "Email zorunludur.",
     "emailInvalid": "Geçerli bir email adresi girin.",
     "passwordRequired": "Şifre zorunludur.",
-    "passwordTooShort": "Şifre en az 8 karakter olmalı."
+    "passwordTooShort": "Şifre en az 8 karakter olmalı.",
+    "verifyEmailFailed": "E-posta doğrulanamadı.",
+    "resendCodeFailed": "Kod tekrar gönderilemedi."
   },
   "network": {
     "unknownError": "Bir hata oluştu.",

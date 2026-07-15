@@ -6,6 +6,11 @@ import 'package:focusflow_mobile/core/storage/token_storage.dart';
 import 'package:focusflow_mobile/features/auth/data/models/login_request.dart';
 import 'package:focusflow_mobile/features/auth/data/models/login_response.dart';
 import 'package:focusflow_mobile/product/localization/locale_keys.dart';
+import 'package:focusflow_mobile/features/auth/data/models/register_request.dart';
+import 'package:focusflow_mobile/features/auth/data/models/register_response.dart';
+import 'package:focusflow_mobile/features/auth/data/models/verify_email_request.dart';
+import 'package:focusflow_mobile/features/auth/data/models/resend_verification_code_request.dart';
+import 'package:focusflow_mobile/features/auth/data/models/success_response.dart';
 
 class AuthRepository {
   final ApiClient _apiClient;
@@ -22,7 +27,7 @@ class AuthRepository {
     final data = response.data;
 
     if (data == null) {
-      throw ApiException(message: LocaleKeys.authEmptyLoginResponse.tr());
+      throw ApiException(message: LocaleKeys.authEmptyResponse.tr());
     }
 
     final loginResponse = LoginResponse.fromJson(data);
@@ -32,6 +37,46 @@ class AuthRepository {
       refreshToken: loginResponse.refreshToken,
     );
     return loginResponse;
+  }
+
+  Future<RegisterResponse> register(RegisterRequest request) async {
+    final response = await _apiClient.post<Map<String, dynamic>>(
+      ApiEndpoints.register,
+      data: request.toJson(),
+    );
+    final data = response.data;
+    if (data == null) {
+      throw ApiException(message: LocaleKeys.authEmptyResponse.tr());
+    }
+    return RegisterResponse.fromJson(data);
+  }
+
+  Future<bool> verifyEmail(VerifyEmailRequest request) async {
+    final response = await _apiClient.post<Map<String, dynamic>>(
+      ApiEndpoints.verifyEmail,
+      data: request.toJson(),
+    );
+
+    final data = response.data;
+    if (data == null) {
+      throw ApiException(message: LocaleKeys.authEmptyResponse.tr());
+    }
+    return SuccessResponse.fromJson(data).success;
+  }
+
+  Future<bool> resendVerificationCode(
+    ResendVerificationCodeRequest request,
+  ) async {
+    final response = await _apiClient.post<Map<String, dynamic>>(
+      ApiEndpoints.resendVerificationCode,
+      data: request.toJson(),
+    );
+
+    final data = response.data;
+    if (data == null) {
+      throw ApiException(message: LocaleKeys.authEmptyResponse.tr());
+    }
+    return SuccessResponse.fromJson(data).success;
   }
 
   Future<void> logout() async {

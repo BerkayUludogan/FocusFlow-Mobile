@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 
 import '../../app/presentation/main_shell_page.dart';
-import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/stats/presentation/pages/stats_page.dart';
 import '../../features/tasks/presentation/pages/tasks_page.dart';
 import '../../features/timer/presentation/pages/timer_page.dart';
@@ -14,14 +13,6 @@ final StatefulShellRoute appShellRoute = StatefulShellRoute.indexedStack(
     StatefulShellBranch(
       routes: [
         GoRoute(
-          path: AppRoutes.timer,
-          builder: (context, state) => const TimerPage(),
-        ),
-      ],
-    ),
-    StatefulShellBranch(
-      routes: [
-        GoRoute(
           path: AppRoutes.tasks,
           builder: (context, state) => const TasksPage(),
         ),
@@ -30,16 +21,16 @@ final StatefulShellRoute appShellRoute = StatefulShellRoute.indexedStack(
     StatefulShellBranch(
       routes: [
         GoRoute(
-          path: AppRoutes.stats,
-          builder: (context, state) => const StatsPage(),
+          path: AppRoutes.timer,
+          builder: (context, state) => const TimerPage(),
         ),
       ],
     ),
     StatefulShellBranch(
       routes: [
         GoRoute(
-          path: AppRoutes.settings,
-          builder: (context, state) => const SettingsPage(),
+          path: AppRoutes.stats,
+          builder: (context, state) => const StatsPage(),
         ),
       ],
     ),

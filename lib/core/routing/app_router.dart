@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:focusflow_mobile/features/settings/presentation/pages/settings_page.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/cubit/auth_cubit.dart';
@@ -22,6 +23,10 @@ class AppRouter {
         routes: [
           ...authRoutes,
           appShellRoute,
+          GoRoute(
+            path: AppRoutes.settings,
+            builder: (context, state) => const SettingsPage(),
+          ),
         ],
       );
 

@@ -12,8 +12,6 @@ class TasksPage extends StatefulWidget {
 class _TasksPageState extends State<TasksPage> with TasksViewMixin {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Tasks')),
-    );
+    return const Center(child: Text('Tasks'));
   }
 }

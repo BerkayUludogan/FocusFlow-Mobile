@@ -44,5 +44,11 @@
   },
   "routing": {
     "pageNotFound": "Page not found."
+  },
+  "shell": {
+    "timer": "Timer",
+    "tasks": "Tasks",
+    "stats": "Stats",
+    "settings": "Settings"
   }
 }

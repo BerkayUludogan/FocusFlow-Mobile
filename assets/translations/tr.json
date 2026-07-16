@@ -35,7 +35,6 @@
     "emailVerified": "E-posta doğrulandı, şimdi giriş yapabilirsin.",
     "codeResent": "Kod tekrar gönderildi.",
     "resendCodeIn": "Kodu tekrar gönder ({}sn)"
-
   },
   "network": {
     "unknownError": "Bir hata oluştu.",
@@ -45,5 +44,11 @@
   },
   "routing": {
     "pageNotFound": "Sayfa bulunamadı."
+  },
+  "shell": {
+    "timer": "Zamanlayıcı",
+    "tasks": "Görevler",
+    "stats": "İstatistikler",
+    "settings": "Ayarlar"
   }
 }

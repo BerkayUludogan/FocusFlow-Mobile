@@ -45,4 +45,9 @@ final class LocaleKeys {
   static const String authEmptyResponse = 'auth.emptyResponse';
 
   static const String routingPageNotFound = 'routing.pageNotFound';
+
+  static const String shellTimer = 'shell.timer';
+  static const String shellTasks = 'shell.tasks';
+  static const String shellStats = 'shell.stats';
+  static const String shellSettings = 'shell.settings';
 }

@@ -17,4 +17,7 @@ class ApiEndpoints {
   static const String tasks = "/api/tasks";
   static const String pomodoroSessionsStart = "/api/pomodoro-sessions/start";
   static const String pomodoroSettings = "/api/users/me/pomodoro-settings";
+
+  static String taskById(String id) => "/api/tasks/$id";
+  static String completeTask(String id) => "/api/tasks/$id/complete";
 }

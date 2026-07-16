@@ -50,5 +50,24 @@
     "tasks": "Görevler",
     "stats": "İstatistikler",
     "settings": "Ayarlar"
+  },
+  "tasks": {
+    "empty": "Henüz görev yok.",
+    "loadFailed": "Görevler yüklenemedi.",
+    "addTask": "Görev Ekle",
+    "editTask": "Görevi Düzenle",
+    "titleLabel": "Başlık",
+    "descriptionLabel": "Açıklama (opsiyonel)",
+    "dueDateLabel": "Bitiş tarihi seç (opsiyonel)",
+    "estimatedPomodoroLabel": "Tahmini Pomodoro Sayısı",
+    "titleRequired": "Başlık zorunludur.",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "deleteConfirmTitle": "Görevi sil?",
+    "deleteConfirmMessage": "Bu görevi silmek istediğine emin misin?",
+    "cancel": "Vazgeç",
+    "complete": "Tamamla",
+    "completeConfirmTitle": "Görevi tamamla?",
+    "completeConfirmMessage": "Bu görevi tamamlandı olarak işaretlemek istediğine emin misin? Bu işlem geri alınamaz."
   }
 }

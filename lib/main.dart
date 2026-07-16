@@ -6,6 +6,7 @@ import 'app/focus_flow_app.dart';
 import 'core/network/api_client.dart';
 import 'core/storage/token_storage.dart';
 import 'features/auth/data/repositories/auth_repository.dart';
+import 'features/tasks/data/repositories/task_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,7 @@ Future<void> main() async {
     apiClient: apiClient,
     tokenStorage: tokenStorage,
   );
+  final taskRepository = TaskRepository(apiClient: apiClient);
 
   runApp(
     EasyLocalization(
@@ -27,7 +29,10 @@ Future<void> main() async {
       path: 'assets/translations',
       fallbackLocale: const Locale('tr'),
       startLocale: const Locale('tr'),
-      child: FocusFlowApp(authRepository: authRepository),
+      child: FocusFlowApp(
+        authRepository: authRepository,
+        taskRepository: taskRepository,
+      ),
     ),
   );
 }

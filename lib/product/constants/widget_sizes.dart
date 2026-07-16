@@ -11,4 +11,10 @@ final class WidgetSizes {
   static const double authIconSize = 36;
   static const double buttonLoadingIndicatorSize = 22;
   static const double buttonLoadingIndicatorStrokeWidth = 2;
+
+  static const double skeletonLeadingSize = 24;
+  static const double skeletonBarHeight = 14;
+  static const double skeletonSubtitleHeight = 12;
+  static const double skeletonBarRadius = 4;
+  static const int skeletonItemCount = 6;
 }

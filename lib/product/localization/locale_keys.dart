@@ -50,4 +50,24 @@ final class LocaleKeys {
   static const String shellTasks = 'shell.tasks';
   static const String shellStats = 'shell.stats';
   static const String shellSettings = 'shell.settings';
+
+  static const String tasksEmpty = 'tasks.empty';
+  static const String tasksLoadFailed = 'tasks.loadFailed';
+  static const String tasksAddTask = 'tasks.addTask';
+  static const String tasksEditTask = 'tasks.editTask';
+  static const String tasksTitleLabel = 'tasks.titleLabel';
+  static const String tasksDescriptionLabel = 'tasks.descriptionLabel';
+  static const String tasksDueDateLabel = 'tasks.dueDateLabel';
+  static const String tasksEstimatedPomodoroLabel =
+      'tasks.estimatedPomodoroLabel';
+  static const String tasksTitleRequired = 'tasks.titleRequired';
+  static const String tasksSave = 'tasks.save';
+  static const String tasksDelete = 'tasks.delete';
+  static const String tasksDeleteConfirmTitle = 'tasks.deleteConfirmTitle';
+  static const String tasksDeleteConfirmMessage = 'tasks.deleteConfirmMessage';
+  static const String tasksCancel = 'tasks.cancel';
+  static const String tasksComplete = 'tasks.complete';
+  static const String tasksCompleteConfirmTitle = 'tasks.completeConfirmTitle';
+  static const String tasksCompleteConfirmMessage =
+      'tasks.completeConfirmMessage';
 }

@@ -5,13 +5,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/routing/app_router.dart';
 import '../features/auth/data/repositories/auth_repository.dart';
 import '../features/auth/presentation/cubit/auth_cubit.dart';
+import '../features/tasks/data/repositories/task_repository.dart';
 import '../product/localization/locale_keys.dart';
 import '../product/theme/app_theme.dart';
 
 class FocusFlowApp extends StatefulWidget {
-  const FocusFlowApp({required this.authRepository, super.key});
+  const FocusFlowApp({
+    required this.authRepository,
+    required this.taskRepository,
+    super.key,
+  });
 
   final AuthRepository authRepository;
+  final TaskRepository taskRepository;
 
   @override
   State<FocusFlowApp> createState() => _FocusFlowAppState();
@@ -37,8 +43,11 @@ class _FocusFlowAppState extends State<FocusFlowApp> {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: widget.authRepository,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: widget.authRepository),
+        RepositoryProvider.value(value: widget.taskRepository),
+      ],
       child: BlocProvider.value(
         value: _authCubit,
         child: MaterialApp.router(

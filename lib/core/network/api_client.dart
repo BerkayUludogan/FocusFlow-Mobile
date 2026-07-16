@@ -141,4 +141,20 @@ class ApiClient {
       throw ApiErrorMapper.map(error);
     }
   }
+
+  Future<Response<T>> patch<T>(
+    String path, {
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      return await _dio.patch<T>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
+    } catch (error) {
+      throw ApiErrorMapper.map(error);
+    }
+  }
 }

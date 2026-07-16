@@ -50,5 +50,24 @@
     "tasks": "Tasks",
     "stats": "Stats",
     "settings": "Settings"
+  },
+  "tasks": {
+    "empty": "No tasks yet.",
+    "loadFailed": "Failed to load tasks.",
+    "addTask": "Add Task",
+    "editTask": "Edit Task",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description (optional)",
+    "dueDateLabel": "Pick a due date (optional)",
+    "estimatedPomodoroLabel": "Estimated Pomodoro Count",
+    "titleRequired": "Title is required.",
+    "save": "Save",
+    "delete": "Delete",
+    "deleteConfirmTitle": "Delete task?",
+    "deleteConfirmMessage": "Are you sure you want to delete this task?",
+    "cancel": "Cancel",
+    "complete": "Complete",
+    "completeConfirmTitle": "Complete task?",
+    "completeConfirmMessage": "Are you sure you want to mark this task as completed? This cannot be undone."
   }
 }

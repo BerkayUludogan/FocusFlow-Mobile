@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:focusflow_mobile/product/localization/locale_keys.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/routing/app_routes.dart';
+import 'widgets/app_bottom_nav_bar.dart';
 
 class MainShellPage extends StatelessWidget {
   const MainShellPage({required this.navigationShell, super.key});
@@ -12,8 +11,15 @@ class MainShellPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTimerTab = navigationShell.currentIndex == 1;
+
     return Scaffold(
+      extendBodyBehindAppBar: isTimerTab,
+      extendBody: isTimerTab,
       appBar: AppBar(
+        backgroundColor: isTimerTab ? Colors.transparent : null,
+        elevation: isTimerTab ? 0 : null,
+        scrolledUnderElevation: isTimerTab ? 0 : null,
         actions: [
           IconButton(
             icon: const Icon(Icons.person_outline),
@@ -22,29 +28,12 @@ class MainShellPage extends StatelessWidget {
         ],
       ),
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
+      bottomNavigationBar: AppBottomNavBar(
+        currentIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) => navigationShell.goBranch(
           index,
           initialLocation: index == navigationShell.currentIndex,
         ),
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.checklist_outlined),
-            selectedIcon: const Icon(Icons.checklist_rounded),
-            label: LocaleKeys.shellTasks.tr(),
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.timer_outlined),
-            selectedIcon: const Icon(Icons.timer_rounded),
-            label: LocaleKeys.shellTimer.tr(),
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.bar_chart_outlined),
-            selectedIcon: const Icon(Icons.bar_chart_rounded),
-            label: LocaleKeys.shellStats.tr(),
-          ),
-        ],
       ),
     );
   }

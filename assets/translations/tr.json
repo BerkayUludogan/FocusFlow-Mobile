@@ -69,5 +69,30 @@
     "complete": "Tamamla",
     "completeConfirmTitle": "Görevi tamamla?",
     "completeConfirmMessage": "Bu görevi tamamlandı olarak işaretlemek istediğine emin misin? Bu işlem geri alınamaz."
+  },
+  "timer": {
+    "focusLabel": "Odaklanma",
+    "shortBreakLabel": "Kısa Mola",
+    "longBreakLabel": "Uzun Mola",
+    "selectTask": "Bir görev seç",
+    "noTasks": "Seçilecek görev yok. Önce bir görev ekle.",
+    "start": "Başlat",
+    "pause": "Duraklat",
+    "resume": "Devam Et",
+    "cancel": "İptal Et",
+    "cancelConfirmTitle": "Seansı iptal et?",
+    "cancelConfirmMessage": "Bu seansı iptal etmek istediğine emin misin? İlerlemen kaydedilmeyecek.",
+    "loadFailed": "Zamanlayıcı yüklenemedi.",
+    "retry": "Tekrar Dene",
+    "reset": "Sıfırla",
+    "finish": "Seansı Bitir",
+    "finishConfirmTitle": "Seansı erken bitir?",
+    "finishConfirmMessage": "Süre dolmadan bu seansı tamamlanmış olarak işaretlemek istediğine emin misin?",
+    "selectedTaskLabel": "Seçili Görev",
+    "activityFocusLabel": "Odak Zamanı",
+    "activityShortBreakLabel": "Mola Zamanı",
+    "activityLongBreakLabel": "Uzun Mola Zamanı",
+    "streakLabel": "Seri",
+    "streakDaysUnit": "gün"
   }
 }

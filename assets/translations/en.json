@@ -68,7 +68,21 @@
     "cancel": "Cancel",
     "complete": "Complete",
     "completeConfirmTitle": "Complete task?",
-    "completeConfirmMessage": "Are you sure you want to mark this task as completed? This cannot be undone."
+    "completeConfirmMessage": "Are you sure you want to mark this task as completed? This cannot be undone.",
+    "headerSubtitle": "Focus, progress, complete.",
+    "filterAll": "All",
+    "filterToday": "Today",
+    "filterUpcoming": "Upcoming",
+    "filterCompleted": "Completed",
+    "searchHint": "Search tasks...",
+    "myTasks": "My Tasks",
+    "sort": "Sort",
+    "sortByDueDate": "Due date",
+    "sortByCreatedDate": "Date added",
+    "sortByTitle": "Title (A-Z)",
+    "defaultCategory": "General",
+    "clearFilters": "Clear filters",
+    "noResults": "No tasks match your search."
   },
   "timer": {
     "focusLabel": "Focus",

@@ -9,6 +9,7 @@ class NeonTimerDial extends StatefulWidget {
   const NeonTimerDial({
     required this.progress,
     required this.isRunning,
+    this.isPaused = false,
     required this.color,
     required this.remainingSeconds,
     required this.phaseLabel,
@@ -20,6 +21,7 @@ class NeonTimerDial extends StatefulWidget {
 
   final double progress;
   final bool isRunning;
+  final bool isPaused;
   final Color color;
   final int remainingSeconds;
   final String phaseLabel;
@@ -39,18 +41,30 @@ class _NeonTimerDialState extends State<NeonTimerDial>
   );
   late Animation<double> _progressAnimation;
 
-  // Purely decorative water-surface motion — not tied to progress, just
-  // runs while the session is active so the dial doesn't feel static.
+  // Drives the ripple's horizontal motion only — just runs while the
+  // session is active so the surface doesn't feel static.
   late final AnimationController _waveController = AnimationController(
     vsync: this,
     duration: const Duration(seconds: 4),
   );
+
+  // Smoothly glides the water level from one authoritative per-second
+  // `progress` sample to the next over exactly that same 1-second window.
+  // Since progress is linear in time, this piecewise-linear interpolation
+  // reconstructs the true countdown line exactly — no drift, no restarts,
+  // and (unlike sampling `progress` directly) no jerky per-second jumps.
+  late final AnimationController _waveLevelController = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 1),
+  );
+  late Animation<double> _waveLevelAnimation;
 
   @override
   void initState() {
     super.initState();
     final start = widget.progress.clamp(0.0, 1.0);
     _progressAnimation = AlwaysStoppedAnimation(start);
+    _waveLevelAnimation = AlwaysStoppedAnimation(start);
     if (widget.isRunning) {
       _startContinuousDescent(from: start);
       _waveController.repeat();
@@ -71,16 +85,25 @@ class _NeonTimerDialState extends State<NeonTimerDial>
 
     if (!widget.isRunning) {
       final target = widget.progress.clamp(0.0, 1.0);
-      if (_controller.isAnimating) {
+      if (widget.isPaused && _controller.isAnimating) {
         // Genuine pause mid-flight: freeze exactly where the ring visually
         // is, instead of snapping to the coarser integer-second state.
         final current = _progressAnimation.value;
         _controller.stop();
         setState(() => _progressAnimation = AlwaysStoppedAnimation(current));
-      } else if (_progressAnimation.value != target) {
-        // Reset / new session while already stopped — snap directly.
-        setState(() => _progressAnimation = AlwaysStoppedAnimation(target));
+      } else {
+        // Cancelled/completed (or a fresh idle session) — always snap to
+        // the target, even mid-animation. Relying on `isAnimating` here
+        // used to freeze the ring in place on cancel/finish instead of
+        // resetting it, since those transitions look identical to a pause
+        // (isRunning: true -> false) from this widget's point of view.
+        _controller.stop();
+        if (_progressAnimation.value != target) {
+          setState(() => _progressAnimation = AlwaysStoppedAnimation(target));
+        }
       }
+      _waveLevelController.stop();
+      setState(() => _waveLevelAnimation = AlwaysStoppedAnimation(target));
       return;
     }
 
@@ -92,6 +115,7 @@ class _NeonTimerDialState extends State<NeonTimerDial>
       // anchoring), so the ring lands exactly on the digit's position the
       // instant it changes — no per-second lag, no stutter.
       _startContinuousDescent(from: _progressAnimation.value);
+      _startWaveLevelGlide(to: widget.progress.clamp(0.0, 1.0));
       return;
     }
 
@@ -103,6 +127,21 @@ class _NeonTimerDialState extends State<NeonTimerDial>
     if ((_progressAnimation.value - expected).abs() > 0.01) {
       _startContinuousDescent(from: expected);
     }
+
+    if (oldWidget.progress != widget.progress) {
+      _startWaveLevelGlide(to: expected);
+    }
+  }
+
+  void _startWaveLevelGlide({required double to}) {
+    _waveLevelAnimation = Tween<double>(
+      begin: _waveLevelAnimation.value,
+      end: to,
+    ).animate(CurvedAnimation(parent: _waveLevelController, curve: Curves.linear));
+    _waveLevelController
+      ..stop()
+      ..value = 0
+      ..forward();
   }
 
   void _startContinuousDescent({required double from}) {
@@ -120,6 +159,7 @@ class _NeonTimerDialState extends State<NeonTimerDial>
   void dispose() {
     _controller.dispose();
     _waveController.dispose();
+    _waveLevelController.dispose();
     super.dispose();
   }
 
@@ -171,12 +211,23 @@ class _NeonTimerDialState extends State<NeonTimerDial>
                       children: [
                         Positioned.fill(
                           child: AnimatedBuilder(
-                            animation: _waveController,
+                            animation: Listenable.merge([
+                              _waveController,
+                              _waveLevelController,
+                            ]),
                             builder: (context, _) {
                               return CustomPaint(
                                 painter: _WavePainter(
                                   color: color,
                                   phase: _waveController.value,
+                                  // Glides between authoritative per-second
+                                  // progress samples (see
+                                  // _startWaveLevelGlide) instead of either
+                                  // jumping in per-second steps or drifting
+                                  // with the ring's independently-corrected
+                                  // animation — so it's both smooth and
+                                  // exactly in sync with the countdown.
+                                  progress: _waveLevelAnimation.value,
                                 ),
                               );
                             },
@@ -296,14 +347,32 @@ class _NeonTimerDialState extends State<NeonTimerDial>
 }
 
 class _WavePainter extends CustomPainter {
-  _WavePainter({required this.color, required this.phase});
+  _WavePainter({
+    required this.color,
+    required this.phase,
+    required this.progress,
+  });
 
   final Color color;
   final double phase;
+  // Fraction of time remaining (1.0 = full, 0.0 = empty), used to drop the
+  // water level from top to bottom as the session drains.
+  final double progress;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final baseline = size.height * 0.74;
+    const topLevel = 0.03;
+    // Just past 1.0 so the ClipOval fully hides the wave once progress
+    // reaches 0 — the circle's bottom edge only touches size.height at its
+    // exact center, so a baseline sitting at exactly 1.0 would still leave
+    // a hairline peeking through. Keep this close to 1.0 though: the
+    // circle narrows fast near its bottom tip, so anything much larger
+    // (e.g. 1.15) makes the wave visually vanish while a large chunk of
+    // real time is still left on the clock — reads as "finishing early"
+    // even though the underlying progress value is accurate.
+    const bottomLevel = 1.02;
+    final baseline =
+        size.height * (topLevel + (bottomLevel - topLevel) * (1 - progress));
     final amplitude = size.height * 0.03;
     final cycle = phase * 2 * pi;
 
@@ -337,7 +406,9 @@ class _WavePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _WavePainter oldDelegate) {
-    return oldDelegate.phase != phase || oldDelegate.color != color;
+    return oldDelegate.phase != phase ||
+        oldDelegate.color != color ||
+        oldDelegate.progress != progress;
   }
 }
 

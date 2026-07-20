@@ -70,6 +70,20 @@ final class LocaleKeys {
   static const String tasksCompleteConfirmTitle = 'tasks.completeConfirmTitle';
   static const String tasksCompleteConfirmMessage =
       'tasks.completeConfirmMessage';
+  static const String tasksHeaderSubtitle = 'tasks.headerSubtitle';
+  static const String tasksFilterAll = 'tasks.filterAll';
+  static const String tasksFilterToday = 'tasks.filterToday';
+  static const String tasksFilterUpcoming = 'tasks.filterUpcoming';
+  static const String tasksFilterCompleted = 'tasks.filterCompleted';
+  static const String tasksSearchHint = 'tasks.searchHint';
+  static const String tasksMyTasks = 'tasks.myTasks';
+  static const String tasksSort = 'tasks.sort';
+  static const String tasksSortByDueDate = 'tasks.sortByDueDate';
+  static const String tasksSortByCreatedDate = 'tasks.sortByCreatedDate';
+  static const String tasksSortByTitle = 'tasks.sortByTitle';
+  static const String tasksDefaultCategory = 'tasks.defaultCategory';
+  static const String tasksClearFilters = 'tasks.clearFilters';
+  static const String tasksNoResults = 'tasks.noResults';
 
   static const String timerFocusLabel = 'timer.focusLabel';
   static const String timerShortBreakLabel = 'timer.shortBreakLabel';

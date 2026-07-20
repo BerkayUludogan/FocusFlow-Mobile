@@ -12,4 +12,21 @@ final class AppColors {
   static const Color textPrimary = Color(0xFF0F172A);
   static const Color textSecondary = Color(0xFF64748B);
   static const Color error = Color(0xFFDC2626);
+
+  // Purely cosmetic per-task accent dots (task_list_item.dart) — picked
+  // deterministically from the task's id so each task gets a distinct,
+  // stable color the moment it's created, without needing a real
+  // category field or any extra storage.
+  static const List<Color> taskAccentColors = [
+    primary,
+    Color(0xFF22C55E), // green
+    Color(0xFFF97316), // orange
+    longBreak, // purple
+    Color(0xFFEC4899), // pink
+    shortBreak, // teal
+  ];
+
+  static Color taskAccentColorFor(String id) {
+    return taskAccentColors[id.hashCode.abs() % taskAccentColors.length];
+  }
 }

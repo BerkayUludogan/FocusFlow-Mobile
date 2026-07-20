@@ -15,7 +15,8 @@ import '../mixins/timer_view_mixin.dart';
 import '../widgets/neon_timer_dial.dart';
 import '../widgets/task_picker.dart';
 import '../widgets/timer_controls.dart';
-import '../widgets/timer_phase_backdrop.dart';
+import '../widgets/timer_page_frame.dart';
+import '../widgets/timer_page_skeleton.dart';
 import '../widgets/timer_phase_indicator.dart';
 
 class TimerPage extends StatefulWidget {
@@ -39,8 +40,18 @@ class _TimerPageState extends State<TimerPage> with TimerViewMixin {
         value: timerCubit,
         child: BlocBuilder<TimerCubit, TimerState>(
           builder: (context, state) {
+            final navBarInset = max(
+              MediaQuery.of(context).padding.bottom,
+              12.0,
+            );
+            final bottomClearance =
+                WidgetSizes.bottomNavBarHeight + navBarInset;
+
             if (state.status == TimerStatus.initial || state.isLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return TimerPageSkeleton(
+                currentType: state.currentType,
+                bottomClearance: bottomClearance,
+              );
             }
 
             if (state.status == TimerStatus.failure) {
@@ -63,83 +74,38 @@ class _TimerPageState extends State<TimerPage> with TimerViewMixin {
                 ? 0.0
                 : state.remainingSeconds / state.totalSeconds;
 
-            final navBarInset = max(
-              MediaQuery.of(context).padding.bottom,
-              12.0,
-            );
-            final bottomClearance =
-                WidgetSizes.bottomNavBarHeight + navBarInset;
-
-            return Stack(
-              children: [
-                Positioned.fill(
-                  child: TimerPhaseBackdrop(currentType: state.currentType),
-                ),
-                SafeArea(
-                  bottom: false,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 12, 20, bottomClearance),
-                    child: Column(
-                      children: [
-                        TimerPhaseIndicator(currentType: state.currentType),
-                        const SizedBox(height: WidgetSizes.timerElementSpacing),
-                        if (state.currentType == PomodoroSessionType.focus)
-                          TaskPicker(
-                            tasks: incompleteTasks,
-                            selectedTaskId: state.selectedTaskId,
-                            onChanged: timerCubit.selectTask,
-                            enabled: state.status == TimerStatus.idle,
-                          ),
-                        if (state.currentType == PomodoroSessionType.focus)
-                          const SizedBox(
-                            height: WidgetSizes.timerElementSpacing,
-                          ),
-                        Expanded(
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              final dialSize = min(
-                                constraints.maxWidth,
-                                constraints.maxHeight,
-                              ).clamp(200.0, WidgetSizes.timerCircleSize);
-
-                              return Align(
-                                alignment: const Alignment(0, -0.35),
-                                child: NeonTimerDial(
-                                  size: dialSize,
-                                  progress: progress,
-                                  isRunning: state.isRunning,
-                                  color: state.currentType.color,
-                                  remainingSeconds: state.remainingSeconds,
-                                  phaseLabel: state.currentType.label,
-                                  phaseIcon: state.currentType.icon,
-                                  activityLabel:
-                                      state.currentType.activityLabel,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: WidgetSizes.timerElementSpacing),
-                        SizedBox(
-                          height: WidgetSizes.timerControlsHeight,
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: TimerControls(
-                              state: state,
-                              color: state.currentType.color,
-                              onStart: timerCubit.start,
-                              onPause: timerCubit.pause,
-                              onResume: timerCubit.resume,
-                              onReset: confirmCancelSession,
-                              onFinish: confirmFinishSession,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            return TimerPageFrame(
+              currentType: state.currentType,
+              bottomClearance: bottomClearance,
+              phaseIndicator: TimerPhaseIndicator(currentType: state.currentType),
+              taskPicker: state.currentType == PomodoroSessionType.focus
+                  ? TaskPicker(
+                      tasks: incompleteTasks,
+                      selectedTaskId: state.selectedTaskId,
+                      onChanged: timerCubit.selectTask,
+                      enabled: state.status == TimerStatus.idle,
+                    )
+                  : null,
+              dialBuilder: (dialSize) => NeonTimerDial(
+                size: dialSize,
+                progress: progress,
+                isRunning: state.isRunning,
+                isPaused: state.isPaused,
+                color: state.currentType.color,
+                remainingSeconds: state.remainingSeconds,
+                phaseLabel: state.currentType.label,
+                phaseIcon: state.currentType.icon,
+                activityLabel: state.currentType.activityLabel,
+              ),
+              controls: TimerControls(
+                state: state,
+                color: state.currentType.color,
+                onStart: timerCubit.start,
+                onPause: timerCubit.pause,
+                onResume: timerCubit.resume,
+                onReset: confirmCancelSession,
+                onFinish: confirmFinishSession,
+              ),
             );
           },
         ),

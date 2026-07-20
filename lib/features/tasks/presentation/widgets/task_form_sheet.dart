@@ -72,7 +72,15 @@ class _TaskFormSheetState extends State<TaskFormSheet> {
       lastDate: DateTime.now().add(const Duration(days: 730)),
     );
     if (picked != null) {
-      setState(() => _dueDate = picked);
+      // showDatePicker returns a local, non-UTC DateTime at midnight.
+      // Serializing that directly omits the 'Z' suffix (Kind=unspecified),
+      // which the dueDateUtc backend field rejects/mishandles. Re-anchor
+      // the same calendar date at UTC midnight instead of calling
+      // .toUtc(), which would shift it into the previous day for any
+      // positive UTC offset.
+      setState(
+        () => _dueDate = DateTime.utc(picked.year, picked.month, picked.day),
+      );
     }
   }
 

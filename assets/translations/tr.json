@@ -68,7 +68,21 @@
     "cancel": "Vazgeç",
     "complete": "Tamamla",
     "completeConfirmTitle": "Görevi tamamla?",
-    "completeConfirmMessage": "Bu görevi tamamlandı olarak işaretlemek istediğine emin misin? Bu işlem geri alınamaz."
+    "completeConfirmMessage": "Bu görevi tamamlandı olarak işaretlemek istediğine emin misin? Bu işlem geri alınamaz.",
+    "headerSubtitle": "Odaklan, ilerle, tamamla.",
+    "filterAll": "Tümü",
+    "filterToday": "Bugün",
+    "filterUpcoming": "Yaklaşan",
+    "filterCompleted": "Tamamlanan",
+    "searchHint": "Görev ara...",
+    "myTasks": "Görevlerim",
+    "sort": "Sırala",
+    "sortByDueDate": "Bitiş tarihi",
+    "sortByCreatedDate": "Eklenme tarihi",
+    "sortByTitle": "Başlık (A-Z)",
+    "defaultCategory": "Genel",
+    "clearFilters": "Filtreleri temizle",
+    "noResults": "Aramanla eşleşen görev yok."
   },
   "timer": {
     "focusLabel": "Odaklanma",

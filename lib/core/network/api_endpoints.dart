@@ -20,4 +20,12 @@ class ApiEndpoints {
 
   static String taskById(String id) => "/api/tasks/$id";
   static String completeTask(String id) => "/api/tasks/$id/complete";
+
+  static const String pomodoroSessions = "/api/pomodoro-sessions";
+  static const String pomodoroSessionsRunning =
+      "/api/pomodoro-sessions/running";
+  static String pomodoroSessionComplete(String id) =>
+      "/api/pomodoro-sessions/$id/complete";
+  static String pomodoroSessionCancel(String id) =>
+      "/api/pomodoro-sessions/$id/cancel";
 }

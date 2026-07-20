@@ -1,4 +1,4 @@
-package com.example.focusflow_mobile
+package com.berkayuludogan.focusflow
 
 import io.flutter.embedding.android.FlutterActivity
 

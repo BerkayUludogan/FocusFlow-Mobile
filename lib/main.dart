@@ -7,6 +7,7 @@ import 'core/network/api_client.dart';
 import 'core/storage/token_storage.dart';
 import 'features/auth/data/repositories/auth_repository.dart';
 import 'features/tasks/data/repositories/task_repository.dart';
+import 'features/timer/data/repositories/pomodoro_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ Future<void> main() async {
     tokenStorage: tokenStorage,
   );
   final taskRepository = TaskRepository(apiClient: apiClient);
+  final pomodoroRepository = PomodoroRepository(apiClient: apiClient);
 
   runApp(
     EasyLocalization(
@@ -32,6 +34,7 @@ Future<void> main() async {
       child: FocusFlowApp(
         authRepository: authRepository,
         taskRepository: taskRepository,
+        pomodoroRepository: pomodoroRepository,
       ),
     ),
   );

@@ -70,4 +70,30 @@ final class LocaleKeys {
   static const String tasksCompleteConfirmTitle = 'tasks.completeConfirmTitle';
   static const String tasksCompleteConfirmMessage =
       'tasks.completeConfirmMessage';
+
+  static const String timerFocusLabel = 'timer.focusLabel';
+  static const String timerShortBreakLabel = 'timer.shortBreakLabel';
+  static const String timerLongBreakLabel = 'timer.longBreakLabel';
+  static const String timerSelectTask = 'timer.selectTask';
+  static const String timerNoTasks = 'timer.noTasks';
+  static const String timerStart = 'timer.start';
+  static const String timerPause = 'timer.pause';
+  static const String timerResume = 'timer.resume';
+  static const String timerCancel = 'timer.cancel';
+  static const String timerCancelConfirmTitle = 'timer.cancelConfirmTitle';
+  static const String timerCancelConfirmMessage = 'timer.cancelConfirmMessage';
+  static const String timerLoadFailed = 'timer.loadFailed';
+  static const String timerRetry = 'timer.retry';
+  static const String timerReset = 'timer.reset';
+  static const String timerFinish = 'timer.finish';
+  static const String timerFinishConfirmTitle = 'timer.finishConfirmTitle';
+  static const String timerFinishConfirmMessage = 'timer.finishConfirmMessage';
+  static const String timerSelectedTaskLabel = 'timer.selectedTaskLabel';
+  static const String timerActivityFocusLabel = 'timer.activityFocusLabel';
+  static const String timerActivityShortBreakLabel =
+      'timer.activityShortBreakLabel';
+  static const String timerActivityLongBreakLabel =
+      'timer.activityLongBreakLabel';
+  static const String timerStreakLabel = 'timer.streakLabel';
+  static const String timerStreakDaysUnit = 'timer.streakDaysUnit';
 }

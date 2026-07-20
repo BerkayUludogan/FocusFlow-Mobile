@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/routing/app_router.dart';
 import '../features/auth/data/repositories/auth_repository.dart';
 import '../features/auth/presentation/cubit/auth_cubit.dart';
+import '../features/timer/data/repositories/pomodoro_repository.dart';
 import '../features/tasks/data/repositories/task_repository.dart';
 import '../product/localization/locale_keys.dart';
 import '../product/theme/app_theme.dart';
@@ -13,11 +14,13 @@ class FocusFlowApp extends StatefulWidget {
   const FocusFlowApp({
     required this.authRepository,
     required this.taskRepository,
+    required this.pomodoroRepository,
     super.key,
   });
 
   final AuthRepository authRepository;
   final TaskRepository taskRepository;
+  final PomodoroRepository pomodoroRepository;
 
   @override
   State<FocusFlowApp> createState() => _FocusFlowAppState();
@@ -47,6 +50,7 @@ class _FocusFlowAppState extends State<FocusFlowApp> {
       providers: [
         RepositoryProvider.value(value: widget.authRepository),
         RepositoryProvider.value(value: widget.taskRepository),
+        RepositoryProvider.value(value: widget.pomodoroRepository),
       ],
       child: BlocProvider.value(
         value: _authCubit,

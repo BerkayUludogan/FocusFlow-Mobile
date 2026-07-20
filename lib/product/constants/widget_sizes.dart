@@ -17,4 +17,17 @@ final class WidgetSizes {
   static const double skeletonSubtitleHeight = 12;
   static const double skeletonBarRadius = 4;
   static const int skeletonItemCount = 6;
+
+  static const double timerCircleSize = 320;
+  static const double timerCircleStrokeWidth = 14;
+  static const double timerElementSpacing = 10;
+
+  /// Fixed height reserved for [TimerControls] so switching between the
+  /// idle "Start" button and the running action row never resizes the
+  /// space above it — the dial would otherwise shift position.
+  static const double timerControlsHeight = 104;
+
+  /// Height of the floating [AppBottomNavBar] card itself, excluding the
+  /// device's own bottom safe-area inset (add that separately).
+  static const double bottomNavBarHeight = 20;
 }

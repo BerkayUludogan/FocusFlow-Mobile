@@ -69,5 +69,30 @@
     "complete": "Complete",
     "completeConfirmTitle": "Complete task?",
     "completeConfirmMessage": "Are you sure you want to mark this task as completed? This cannot be undone."
+  },
+  "timer": {
+    "focusLabel": "Focus",
+    "shortBreakLabel": "Short Break",
+    "longBreakLabel": "Long Break",
+    "selectTask": "Select a task",
+    "noTasks": "No tasks to pick. Add a task first.",
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "cancel": "Cancel",
+    "cancelConfirmTitle": "Cancel session?",
+    "cancelConfirmMessage": "Are you sure you want to cancel this session? Your progress won't be saved.",
+    "loadFailed": "Could not load the timer.",
+    "retry": "Retry",
+    "reset": "Reset",
+    "finish": "End Session",
+    "finishConfirmTitle": "End session early?",
+    "finishConfirmMessage": "Are you sure you want to mark this session as complete before time runs out?",
+    "selectedTaskLabel": "Selected Task",
+    "activityFocusLabel": "Focus Time",
+    "activityShortBreakLabel": "Break Time",
+    "activityLongBreakLabel": "Long Break Time",
+    "streakLabel": "Streak",
+    "streakDaysUnit": "days"
   }
 }

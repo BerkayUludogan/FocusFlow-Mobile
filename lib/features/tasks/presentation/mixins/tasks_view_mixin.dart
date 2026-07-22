@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focusflow_mobile/features/tasks/data/repositories/task_repository.dart';
+import 'package:focusflow_mobile/features/timer/data/repositories/pomodoro_repository.dart';
 import 'package:focusflow_mobile/product/localization/locale_keys.dart';
 
 import '../cubit/tasks_cubit.dart';
@@ -13,8 +14,10 @@ mixin TasksViewMixin on State<TasksPage> {
   @override
   void initState() {
     super.initState();
-    tasksCubit = TasksCubit(taskRepository: context.read<TaskRepository>())
-      ..fetchTasks();
+    tasksCubit = TasksCubit(
+      taskRepository: context.read<TaskRepository>(),
+      pomodoroRepository: context.read<PomodoroRepository>(),
+    )..fetchTasks();
   }
 
   @override

@@ -2,7 +2,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-enum AuthStatus { initial, loading, authenticated, unauthenticated, failure }
+enum AuthStatus {
+  initial,
+  loading,
+  authenticated,
+  unauthenticated,
+  failure,
+  emailNotVerified,
+}
 
 class AuthState extends Equatable {
   const AuthState({this.status = AuthStatus.initial, this.errorMessage});

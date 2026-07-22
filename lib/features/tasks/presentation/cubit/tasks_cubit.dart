@@ -194,7 +194,7 @@ class TasksCubit extends BaseCubit<TasksState> {
                 (task) => task.id == id
                     ? task.copyWith(
                         isCompleted: response.isCompleted,
-                        completedAtUtc: response.completedAtUtc,
+                        completedAtUtc: () => response.completedAtUtc,
                       )
                     : task,
               )

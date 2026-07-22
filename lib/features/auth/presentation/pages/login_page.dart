@@ -14,6 +14,7 @@ import '../mixins/auth_form_validators_mixin.dart';
 import '../mixins/login_view_mixin.dart';
 import '../widgets/auth_page_scaffold.dart';
 import '../widgets/password_form_field.dart';
+import 'email_verification_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -42,6 +43,22 @@ class _LoginPageState extends State<LoginPage>
             SnackBar(
               backgroundColor: AppColors.error,
               content: Text(state.errorMessage!),
+            ),
+          );
+        }
+
+        if (state.status == AuthStatus.emailNotVerified) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppColors.error,
+              content: Text(LocaleKeys.authEmailNotVerified.tr()),
+            ),
+          );
+          context.push(
+            AppRoutes.verifyEmail,
+            extra: EmailVerificationArgs(
+              email: emailController.text.trim(),
+              canCancel: true,
             ),
           );
         }

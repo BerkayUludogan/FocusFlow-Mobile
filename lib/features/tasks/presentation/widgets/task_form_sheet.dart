@@ -71,7 +71,7 @@ class _TaskFormSheetState extends State<TaskFormSheet> {
       firstDate: DateTime.now().subtract(const Duration(days: 1)),
       lastDate: DateTime.now().add(const Duration(days: 730)),
     );
-    if (picked != null) {
+    if (picked != null && mounted) {
       // showDatePicker returns a local, non-UTC DateTime at midnight.
       // Serializing that directly omits the 'Z' suffix (Kind=unspecified),
       // which the dueDateUtc backend field rejects/mishandles. Re-anchor

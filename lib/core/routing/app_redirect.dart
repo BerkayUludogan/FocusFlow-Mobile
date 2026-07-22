@@ -27,7 +27,8 @@ String? appRedirect(AuthCubit authCubit, GoRouterState state) {
   }
 
   if (authStatus == AuthStatus.unauthenticated ||
-      authStatus == AuthStatus.failure) {
+      authStatus == AuthStatus.failure ||
+      authStatus == AuthStatus.emailNotVerified) {
     return isAuthRoute ? null : AppRoutes.login;
   }
 

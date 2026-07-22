@@ -20,6 +20,12 @@ class TimerCubit extends BaseCubit<TimerState> {
   static const _uuid = Uuid();
   Timer? _ticker;
 
+  // Guards start/cancel/complete against overlapping session-mutating
+  // requests (e.g. Reset confirmed while Finish's request is still in
+  // flight) — without it, whichever response resolves last silently wins
+  // and can leave local state out of sync with the backend.
+  bool _actionInFlight = false;
+
   // Anchors the countdown to wall-clock time instead of a naive per-tick
   // decrement, so `Timer.periodic` jitter/backgrounding can't drift the
   // displayed remaining time away from the actual elapsed duration.
@@ -98,10 +104,12 @@ class TimerCubit extends BaseCubit<TimerState> {
   }
 
   Future<void> start() async {
+    if (_actionInFlight) return;
     if (state.currentType == PomodoroSessionType.focus && state.selectedTaskId == null) {
       return;
     }
 
+    _actionInFlight = true;
     try {
       final session = await _pomodoroRepository.startSession(
         StartPomodoroSessionRequest(
@@ -132,6 +140,8 @@ class TimerCubit extends BaseCubit<TimerState> {
           errorMessage: error is ApiException ? error.toString() : null,
         ),
       );
+    } finally {
+      _actionInFlight = false;
     }
   }
 
@@ -150,9 +160,11 @@ class TimerCubit extends BaseCubit<TimerState> {
   }
 
   Future<void> cancelSession() async {
+    if (_actionInFlight) return;
     final sessionId = state.sessionId;
     if (sessionId == null) return;
 
+    _actionInFlight = true;
     _ticker?.cancel();
 
     try {
@@ -178,6 +190,8 @@ class TimerCubit extends BaseCubit<TimerState> {
           errorMessage: error is ApiException ? error.toString() : null,
         ),
       );
+    } finally {
+      _actionInFlight = false;
     }
   }
 
@@ -212,9 +226,13 @@ class TimerCubit extends BaseCubit<TimerState> {
   }
 
   Future<void> _completeCurrentSession() async {
+    if (_actionInFlight) return;
     final sessionId = state.sessionId;
     if (sessionId == null) return;
 
+    _actionInFlight = true;
+    var shouldAutoStart = false;
+    var canAutoStart = false;
     try {
       final response = await _pomodoroRepository.completeSession(sessionId);
 
@@ -224,7 +242,7 @@ class TimerCubit extends BaseCubit<TimerState> {
           : state.completedFocusCount;
       final nextType = _nextType(wasFocus, completedFocusCount, state.settings);
       final totalSeconds = _durationForType(nextType, state.settings) * 60;
-      final shouldAutoStart = wasFocus
+      shouldAutoStart = wasFocus
           ? (state.settings?.autoStartBreaks ?? false)
           : (state.settings?.autoStartPomodoros ?? false);
       final selectedTaskCompletedCount = wasFocus
@@ -245,11 +263,8 @@ class TimerCubit extends BaseCubit<TimerState> {
         ),
       );
 
-      final canAutoStart =
+      canAutoStart =
           nextType != PomodoroSessionType.focus || state.selectedTaskId != null;
-      if (shouldAutoStart && canAutoStart) {
-        await start();
-      }
     } catch (error) {
       emit(
         state.copyWith(
@@ -257,6 +272,14 @@ class TimerCubit extends BaseCubit<TimerState> {
           errorMessage: error is ApiException ? error.toString() : null,
         ),
       );
+    } finally {
+      _actionInFlight = false;
+    }
+
+    // Outside the try/finally so start()'s own guard is free to engage —
+    // this is a sequential continuation, not a concurrent action.
+    if (shouldAutoStart && canAutoStart) {
+      await start();
     }
   }
 
@@ -266,7 +289,8 @@ class TimerCubit extends BaseCubit<TimerState> {
     PomodoroSettings? settings,
   ) {
     if (!wasFocus) return PomodoroSessionType.focus;
-    final interval = settings?.longBreakInterval ?? 4;
+    final rawInterval = settings?.longBreakInterval ?? 4;
+    final interval = rawInterval > 0 ? rawInterval : 4;
     return completedFocusCount % interval == 0
         ? PomodoroSessionType.longBreak
         : PomodoroSessionType.shortBreak;

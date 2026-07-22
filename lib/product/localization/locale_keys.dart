@@ -9,6 +9,7 @@ final class LocaleKeys {
   static const String authLoginButton = 'auth.loginButton';
   static const String authLoginSuccess = 'auth.loginSuccess';
   static const String authLoginFailed = 'auth.loginFailed';
+  static const String authEmailNotVerified = 'auth.emailNotVerified';
   static const String authRegisterFailed = 'auth.registerFailed';
   static const String authLogoutFailed = 'auth.logoutFailed';
   static const String authSessionCheckFailed = 'auth.sessionCheckFailed';
@@ -36,6 +37,7 @@ final class LocaleKeys {
   static const String authEmailVerified = 'auth.emailVerified';
   static const String authCodeResent = 'auth.codeResent';
   static const String authResendCodeIn = 'auth.resendCodeIn';
+  static const String authBackToLogin = 'auth.backToLogin';
 
   static const String networkUnknownError = 'network.unknownError';
   static const String networkUnauthorized = 'network.unauthorized';
@@ -43,6 +45,8 @@ final class LocaleKeys {
   static const String networkConnectionError = 'network.connectionError';
 
   static const String authEmptyResponse = 'auth.emptyResponse';
+
+  static const String settingsLogout = 'settings.logout';
 
   static const String routingPageNotFound = 'routing.pageNotFound';
 

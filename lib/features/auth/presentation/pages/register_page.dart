@@ -14,6 +14,7 @@ import '../mixins/auth_form_validators_mixin.dart';
 import '../mixins/register_view_mixin.dart';
 import '../widgets/auth_page_scaffold.dart';
 import '../widgets/password_form_field.dart';
+import 'email_verification_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -33,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage>
           if (state.status == RegisterStatus.success) {
             context.push(
               AppRoutes.verifyEmail,
-              extra: emailController.text.trim(),
+              extra: EmailVerificationArgs(email: emailController.text.trim()),
             );
           }
 

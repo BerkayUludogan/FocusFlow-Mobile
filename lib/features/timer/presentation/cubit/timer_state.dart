@@ -38,18 +38,21 @@ class TimerState extends Equatable {
 
   TimerState copyWith({
     TimerStatus? status,
+    PomodoroSettings? settings,
+    PomodoroSessionType? currentType,
     String? sessionId,
     String? selectedTaskId,
     int? selectedTaskEstimatedCount,
     int? selectedTaskCompletedCount,
     int? remainingSeconds,
     int? totalSeconds,
+    int? completedFocusCount,
     String? errorMessage,
   }) {
     return TimerState(
       status: status ?? this.status,
-      settings: settings,
-      currentType: currentType,
+      settings: settings ?? this.settings,
+      currentType: currentType ?? this.currentType,
       sessionId: sessionId ?? this.sessionId,
       selectedTaskId: selectedTaskId ?? this.selectedTaskId,
       selectedTaskEstimatedCount:
@@ -58,7 +61,7 @@ class TimerState extends Equatable {
           selectedTaskCompletedCount ?? this.selectedTaskCompletedCount,
       remainingSeconds: remainingSeconds ?? this.remainingSeconds,
       totalSeconds: totalSeconds ?? this.totalSeconds,
-      completedFocusCount: completedFocusCount,
+      completedFocusCount: completedFocusCount ?? this.completedFocusCount,
       errorMessage: errorMessage,
     );
   }

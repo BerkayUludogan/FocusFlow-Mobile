@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:focusflow_mobile/core/network/api_client.dart';
 import 'package:focusflow_mobile/core/network/api_endpoints.dart';
@@ -15,8 +17,16 @@ import 'package:focusflow_mobile/features/auth/data/models/success_response.dart
 class AuthRepository {
   final ApiClient _apiClient;
   final TokenStorage _tokenStorage;
+  final _sessionExpiredController = StreamController<void>.broadcast();
 
-  AuthRepository({required this._apiClient, required this._tokenStorage});
+  AuthRepository({required this._apiClient, required this._tokenStorage}) {
+    _apiClient.onSessionExpired = () => _sessionExpiredController.add(null);
+  }
+
+  // Fires when a refresh attempt has definitively failed (missing/expired
+  // refresh token) — AuthCubit listens to redirect the user back to login
+  // instead of leaving them stuck on a screen that can never recover.
+  Stream<void> get sessionExpired => _sessionExpiredController.stream;
 
   Future<LoginResponse> login(LoginRequest request) async {
     final response = await _apiClient.post<Map<String, dynamic>>(

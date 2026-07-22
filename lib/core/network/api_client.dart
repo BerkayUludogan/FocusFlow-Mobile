@@ -54,27 +54,60 @@ class ApiClient {
           handler.next(options);
         },
         onError: (error, handler) async {
-          if (error.response?.statusCode == 401) {
-            final refreshToken = await _tokenStorage.getRefreshToken();
-            if (refreshToken == null || refreshToken.isEmpty) {
-              await _tokenStorage.clear();
-              return handler.next(error);
-            }
-
-            try {
-              final newAccessToken = await _refreshAccessToken(refreshToken);
-
-              final retryRequest = error.requestOptions;
-              retryRequest.headers['Authorization'] = 'Bearer $newAccessToken';
-
-              final retryResponse = await _dio.fetch(retryRequest);
-              return handler.resolve(retryResponse);
-            } catch (_) {
-              await _tokenStorage.clear();
-              return handler.next(error);
-            }
+          if (error.response?.statusCode != 401) {
+            return handler.next(error);
           }
-          handler.next(error);
+
+          final alreadyRetried = error.requestOptions.extra['retriedAfter401'] == true;
+          if (alreadyRetried) {
+            // Refresh succeeded but the retried request 401'd again anyway
+            // (e.g. account disabled) — the session is dead, not just the
+            // access token.
+            await _tokenStorage.clear();
+            onSessionExpired?.call();
+            return handler.next(error);
+          }
+
+          final refreshToken = await _tokenStorage.getRefreshToken();
+          if (refreshToken == null || refreshToken.isEmpty) {
+            await _tokenStorage.clear();
+            onSessionExpired?.call();
+            return handler.next(error);
+          }
+
+          String newAccessToken;
+          try {
+            newAccessToken = await _refreshAccessToken(refreshToken);
+          } on DioException catch (refreshError) {
+            // A response means the server actively rejected the refresh
+            // token (expired/revoked) — that's a real session end. No
+            // response (timeout, offline) is a transient network failure:
+            // keep the refresh token so a later retry can still succeed
+            // instead of forcing a logout the user didn't cause.
+            if (refreshError.response != null) {
+              await _tokenStorage.clear();
+              onSessionExpired?.call();
+            }
+            return handler.next(error);
+          } catch (_) {
+            await _tokenStorage.clear();
+            onSessionExpired?.call();
+            return handler.next(error);
+          }
+
+          try {
+            final retryRequest = error.requestOptions;
+            retryRequest.headers['Authorization'] = 'Bearer $newAccessToken';
+            retryRequest.extra['retriedAfter401'] = true;
+
+            final retryResponse = await _dio.fetch(retryRequest);
+            return handler.resolve(retryResponse);
+          } catch (_) {
+            // Refresh already succeeded and the new tokens are saved —
+            // whatever failed here is unrelated to the session, so don't
+            // clear valid tokens over it.
+            return handler.next(error);
+          }
         },
       ),
     );
@@ -82,6 +115,12 @@ class ApiClient {
 
   final TokenStorage _tokenStorage;
   final Dio _dio;
+
+  // Fires once refresh has definitively failed (missing/expired refresh
+  // token) and tokens have been cleared, so callers still on an
+  // authenticated screen know the session is gone rather than being stuck
+  // retrying a request that can never succeed.
+  void Function()? onSessionExpired;
 
   Future<Response<T>> get<T>(
     String path, {

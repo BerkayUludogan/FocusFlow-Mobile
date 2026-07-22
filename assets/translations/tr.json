@@ -7,6 +7,7 @@
     "loginButton": "Giriş Yap",
     "loginSuccess": "Giriş başarılı.",
     "loginFailed": "Giriş yapılamadı.",
+    "emailNotVerified": "Email adresini doğrulaman gerekiyor.",
     "registerFailed": "Kayıt oluşturulamadı.",
     "logoutFailed": "Çıkış yapılamadı.",
     "sessionCheckFailed": "Oturum kontrol edilemedi.",
@@ -34,7 +35,11 @@
     "resendCode": "Kodu tekrar gönder",
     "emailVerified": "E-posta doğrulandı, şimdi giriş yapabilirsin.",
     "codeResent": "Kod tekrar gönderildi.",
-    "resendCodeIn": "Kodu tekrar gönder ({}sn)"
+    "resendCodeIn": "Kodu tekrar gönder ({}sn)",
+    "backToLogin": "Vazgeç, giriş sayfasına dön"
+  },
+  "settings": {
+    "logout": "Çıkış Yap"
   },
   "network": {
     "unknownError": "Bir hata oluştu.",

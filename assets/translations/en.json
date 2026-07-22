@@ -7,6 +7,7 @@
     "loginButton": "Login",
     "loginSuccess": "Login successful.",
     "loginFailed": "Login failed.",
+    "emailNotVerified": "You need to verify your email address.",
     "registerFailed": "Register failed.",
     "logoutFailed": "Logout failed.",
     "sessionCheckFailed": "Session could not be checked.",
@@ -34,7 +35,11 @@
     "resendCode": "Resend code",
     "emailVerified": "Email verified, you can now login.",
     "codeResent": "Code resent.",
-    "resendCodeIn": "Resend code in {}s"
+    "resendCodeIn": "Resend code in {}s",
+    "backToLogin": "Cancel, back to login"
+  },
+  "settings": {
+    "logout": "Log Out"
   },
   "network": {
     "unknownError": "An error occurred.",

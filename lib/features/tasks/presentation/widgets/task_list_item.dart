@@ -35,9 +35,17 @@ class TaskListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accent = AppColors.taskAccentColorFor(task.id);
-    final dueDate = task.dueDateUtc?.toLocal();
-    final isOverdue =
-        !task.isCompleted && dueDate != null && dueDate.isBefore(DateTime.now());
+    // dueDateUtc is stored as UTC-midnight of the *picked local calendar
+    // date*, not a true UTC instant — read its y/m/d back directly instead
+    // of `.toLocal()`, which would shift the date for negative-UTC-offset
+    // users, and compare calendar days rather than exact instants so a task
+    // isn't "overdue" for the first several hours of its own due date.
+    final dueDate = task.dueDateUtc;
+    final now = DateTime.now();
+    final isOverdue = !task.isCompleted &&
+        dueDate != null &&
+        DateTime(dueDate.year, dueDate.month, dueDate.day)
+            .isBefore(DateTime(now.year, now.month, now.day));
     final hasSessions = task.estimatedPomodoroCount > 0;
     final hasMeta = dueDate != null || hasSessions;
 

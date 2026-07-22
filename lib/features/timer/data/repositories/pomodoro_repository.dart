@@ -62,6 +62,6 @@ class PomodoroRepository {
         'pageSize': 1,
       },
     );
-    return response.data!['totalCount'] as int;
+    return (response.data!['totalCount'] as num).toInt();
   }
 }

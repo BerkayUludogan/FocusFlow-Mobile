@@ -53,7 +53,7 @@ class ApiErrorMapper {
       );
     }
     return ApiException(
-      message: error.message ?? LocaleKeys.networkConnectionError.tr(),
+      message: LocaleKeys.networkConnectionError.tr(),
       statusCode: statusCode,
     );
   }

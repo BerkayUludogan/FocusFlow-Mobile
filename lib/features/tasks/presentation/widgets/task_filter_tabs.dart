@@ -30,7 +30,11 @@ extension TaskFilterOptionX on TaskFilterOption {
       case TaskFilterOption.today:
       case TaskFilterOption.upcoming:
         if (task.isCompleted) return false;
-        final due = task.dueDateUtc?.toLocal();
+        // dueDateUtc is stored as UTC-midnight of the *picked local calendar
+        // date* (see task_form_sheet's _pickDueDate), not a true UTC instant
+        // — so read its y/m/d back directly instead of `.toLocal()`, which
+        // would shift the date for negative-UTC-offset users.
+        final due = task.dueDateUtc;
         if (due == null) return false;
         final dueDate = DateTime(due.year, due.month, due.day);
         return this == TaskFilterOption.today

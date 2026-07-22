@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:focusflow_mobile/product/localization/locale_keys.dart';
 
 import '../mixins/stats_view_mixin.dart';
 
@@ -12,6 +14,6 @@ class StatsPage extends StatefulWidget {
 class _StatsPageState extends State<StatsPage> with StatsViewMixin {
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Stats'));
+    return Center(child: Text(LocaleKeys.shellStats.tr()));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'task_item.g.dart';
@@ -33,14 +34,19 @@ class TaskItem {
   factory TaskItem.fromJson(Map<String, dynamic> json) =>
       _$TaskItemFromJson(json);
 
-  TaskItem copyWith({bool? isCompleted, DateTime? completedAtUtc}) {
+  TaskItem copyWith({
+    bool? isCompleted,
+    ValueGetter<DateTime?>? completedAtUtc,
+  }) {
     return TaskItem(
       id: id,
       clientId: clientId,
       title: title,
       description: description,
       isCompleted: isCompleted ?? this.isCompleted,
-      completedAtUtc: completedAtUtc ?? this.completedAtUtc,
+      completedAtUtc: completedAtUtc != null
+          ? completedAtUtc()
+          : this.completedAtUtc,
       dueDateUtc: dueDateUtc,
       estimatedPomodoroCount: estimatedPomodoroCount,
       completedPomodoroCount: completedPomodoroCount,

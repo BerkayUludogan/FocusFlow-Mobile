@@ -72,6 +72,21 @@ class _TasksPageState extends State<TasksPage> with TasksViewMixin {
   _TaskSortOption? _orderedSort;
   String? _orderedQuery;
   Set<String>? _orderedIdSet;
+  Map<String, Object?>? _orderedSortKeys;
+
+  // The value each task is ordered by under the current sort — used to
+  // detect edits (e.g. renaming a task while sorted by title) that change
+  // where it belongs, since the id set alone doesn't catch that.
+  Object? _sortKeyFor(TaskItem task) {
+    switch (_sort) {
+      case _TaskSortOption.createdDate:
+        return task.createdAtUtc;
+      case _TaskSortOption.dueDate:
+        return task.dueDateUtc;
+      case _TaskSortOption.title:
+        return task.title;
+    }
+  }
 
   @override
   void dispose() {
@@ -105,23 +120,36 @@ class _TasksPageState extends State<TasksPage> with TasksViewMixin {
         _orderedIdSet != null &&
         _orderedIdSet!.length == idSet.length &&
         idSet.every(_orderedIdSet!.contains);
+    final sortKeys = {
+      for (final task in filtered) task.id: _sortKeyFor(task),
+    };
+    final sameSortKeys =
+        sameIdSet &&
+        _orderedSortKeys != null &&
+        idSet.every((id) => _orderedSortKeys![id] == sortKeys[id]);
     final needsResort =
         _orderedIds == null ||
         _orderedFilter != _filter ||
         _orderedSort != _sort ||
         _orderedQuery != query ||
-        !sameIdSet;
+        !sameIdSet ||
+        !sameSortKeys;
 
     if (needsResort) {
       filtered.sort((a, b) {
         if (a.isCompleted != b.isCompleted) return a.isCompleted ? 1 : -1;
-        return _sort.compare(a, b);
+        final result = _sort.compare(a, b);
+        // Dart's List.sort isn't stable, so break ties deterministically
+        // (equal titles/due dates would otherwise reorder unpredictably
+        // between resorts).
+        return result != 0 ? result : a.id.compareTo(b.id);
       });
       _orderedIds = filtered.map((task) => task.id).toList();
       _orderedFilter = _filter;
       _orderedSort = _sort;
       _orderedQuery = query;
       _orderedIdSet = idSet;
+      _orderedSortKeys = sortKeys;
     } else {
       final rank = {
         for (var i = 0; i < _orderedIds!.length; i++) _orderedIds![i]: i,
@@ -264,6 +292,7 @@ class _TasksPageState extends State<TasksPage> with TasksViewMixin {
                                     itemBuilder: (context, index) {
                                       final task = visibleTasks[index];
                                       return TaskListItem(
+                                        key: ValueKey(task.id),
                                         task: task,
                                         focusDurationMinutes:
                                             state.focusDurationMinutes,

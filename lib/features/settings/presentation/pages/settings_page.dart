@@ -19,7 +19,7 @@ class _SettingsPageState extends State<SettingsPage> with SettingsViewMixin {
       body: Center(
         child: ElevatedButton(
           onPressed: logout,
-          child: const Text('Çıkış Yap'),
+          child: Text(LocaleKeys.settingsLogout.tr()),
         ),
       ),
     );

@@ -21,7 +21,18 @@ final List<RouteBase> authRoutes = [
   ),
   GoRoute(
     path: AppRoutes.verifyEmail,
-    builder: (context, state) =>
-        EmailVerificationPage(email: state.extra as String),
+    // Reachable only via an explicit push with EmailVerificationArgs as
+    // extra (from register/login). A deep link, restored navigation state,
+    // or hot restart can hit this path with no/wrong extra, so redirect to
+    // login instead of letting the builder's cast crash.
+    redirect: (context, state) =>
+        state.extra is EmailVerificationArgs ? null : AppRoutes.login,
+    builder: (context, state) {
+      final args = state.extra! as EmailVerificationArgs;
+      return EmailVerificationPage(
+        email: args.email,
+        canCancel: args.canCancel,
+      );
+    },
   ),
 ];

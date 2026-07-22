@@ -85,26 +85,48 @@ class _SkeletonTaskRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Row(
-          children: [
-            const _SkeletonBox(width: 20, height: 20, radius: 6),
-            const SizedBox(width: 14),
-            const _SkeletonBox(width: 8, height: 8, radius: 4),
-            const SizedBox(width: 8),
-            Expanded(
-              child: _SkeletonBox(width: titleWidth, height: 16, radius: 4),
-            ),
-            const SizedBox(width: 8),
-            const _SkeletonBox(width: 22, height: 22, radius: 11),
-            const SizedBox(width: 12),
-            const _SkeletonBox(width: 20, height: 20, radius: 4),
-          ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(width: 4, color: Colors.white),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
+                  color: Colors.white,
+                  child: Row(
+                    children: [
+                      const _SkeletonBox(width: 22, height: 22, radius: 7),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _SkeletonBox(
+                              width: titleWidth,
+                              height: 16,
+                              radius: 4,
+                            ),
+                            const SizedBox(height: 8),
+                            const _SkeletonBox(
+                              width: 64,
+                              height: 14,
+                              radius: 7,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const _SkeletonBox(width: 20, height: 20, radius: 4),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

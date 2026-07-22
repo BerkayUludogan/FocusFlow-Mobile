@@ -12,6 +12,7 @@ final class AppColors {
   static const Color textPrimary = Color(0xFF0F172A);
   static const Color textSecondary = Color(0xFF64748B);
   static const Color error = Color(0xFFDC2626);
+  static const Color favorite = Color(0xFFF59E0B); // amber — favori yıldız
 
   // Purely cosmetic per-task accent dots (task_list_item.dart) — picked
   // deterministically from the task's id so each task gets a distinct,

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focusflow_mobile/core/routing/app_routes.dart';
 import 'package:focusflow_mobile/features/tasks/data/models/task_item.dart';
 import 'package:focusflow_mobile/features/tasks/presentation/widgets/task_list_skeleton.dart';
+import 'package:focusflow_mobile/features/timer/presentation/cubit/timer_task_handoff.dart';
 import 'package:focusflow_mobile/product/constants/widget_sizes.dart';
 import 'package:focusflow_mobile/product/localization/locale_keys.dart';
 import 'package:focusflow_mobile/product/theme/app_colors.dart';
@@ -62,6 +63,16 @@ class _TasksPageState extends State<TasksPage> with TasksViewMixin {
   _TaskSortOption _sort = _TaskSortOption.createdDate;
   String _query = '';
 
+  // Snapshot of the last computed display order, keyed by task id. Ticking a
+  // task complete must not yank it to the bottom mid-scroll, so we only
+  // recompute ordering when the underlying task set actually changes (added,
+  // removed, or a filter/sort/search change) — not on every completion toggle.
+  List<String>? _orderedIds;
+  TaskFilterOption? _orderedFilter;
+  _TaskSortOption? _orderedSort;
+  String? _orderedQuery;
+  Set<String>? _orderedIdSet;
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -89,7 +100,36 @@ class _TasksPageState extends State<TasksPage> with TasksViewMixin {
         )
         .toList();
 
-    filtered.sort(_sort.compare);
+    final idSet = filtered.map((task) => task.id).toSet();
+    final sameIdSet =
+        _orderedIdSet != null &&
+        _orderedIdSet!.length == idSet.length &&
+        idSet.every(_orderedIdSet!.contains);
+    final needsResort =
+        _orderedIds == null ||
+        _orderedFilter != _filter ||
+        _orderedSort != _sort ||
+        _orderedQuery != query ||
+        !sameIdSet;
+
+    if (needsResort) {
+      filtered.sort((a, b) {
+        if (a.isCompleted != b.isCompleted) return a.isCompleted ? 1 : -1;
+        return _sort.compare(a, b);
+      });
+      _orderedIds = filtered.map((task) => task.id).toList();
+      _orderedFilter = _filter;
+      _orderedSort = _sort;
+      _orderedQuery = query;
+      _orderedIdSet = idSet;
+    } else {
+      final rank = {
+        for (var i = 0; i < _orderedIds!.length; i++) _orderedIds![i]: i,
+      };
+      filtered.sort(
+        (a, b) => (rank[a.id] ?? 0).compareTo(rank[b.id] ?? 0),
+      );
+    }
     return filtered;
   }
 
@@ -225,8 +265,20 @@ class _TasksPageState extends State<TasksPage> with TasksViewMixin {
                                       final task = visibleTasks[index];
                                       return TaskListItem(
                                         task: task,
+                                        focusDurationMinutes:
+                                            state.focusDurationMinutes,
+                                        isFavorite: state.favoriteTaskIds
+                                            .contains(task.id),
                                         onToggleComplete: () =>
                                             confirmComplete(task.id),
+                                        onToggleFavorite: () =>
+                                            tasksCubit.toggleFavorite(
+                                              task.id,
+                                            ),
+                                        onStartFocusSession: () {
+                                          TimerTaskHandoff.request(task);
+                                          context.go(AppRoutes.timer);
+                                        },
                                         onEdit: () => showTaskFormSheet(
                                           context,
                                           cubit: tasksCubit,

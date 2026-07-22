@@ -18,6 +18,19 @@ class TaskPicker extends StatelessWidget {
   final ValueChanged<TaskItem> onChanged;
   final bool enabled;
 
+  Future<void> _openPicker(BuildContext context) async {
+    final selected = await showModalBottomSheet<TaskItem>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _TaskPickerSheet(
+        tasks: tasks,
+        selectedTaskId: selectedTaskId,
+      ),
+    );
+    if (selected != null) onChanged(selected);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (tasks.isEmpty) {
@@ -38,48 +51,160 @@ class TaskPicker extends StatelessWidget {
       );
     }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
+    TaskItem? selectedTask;
+    if (selectedTaskId != null) {
+      for (final task in tasks) {
+        if (task.id == selectedTaskId) {
+          selectedTask = task;
+          break;
+        }
+      }
+    }
+
+    return Material(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 10),
-        ],
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: selectedTaskId,
-          isExpanded: true,
-          itemHeight: 56,
-          icon: const Icon(Icons.keyboard_arrow_down_rounded),
-          hint: _TaskRow(
-            icon: Icons.folder_outlined,
-            label: LocaleKeys.timerSelectTask.tr(),
+        onTap: enabled ? () => _openPicker(context) : null,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 10,
+              ),
+            ],
           ),
-          selectedItemBuilder: (context) {
-            return tasks
-                .map(
-                  (task) => _TaskRow(
-                    icon: Icons.folder_outlined,
-                    label: task.title,
-                    caption: LocaleKeys.timerSelectedTaskLabel.tr(),
+          child: Row(
+            children: [
+              Expanded(
+                child: selectedTask == null
+                    ? _TaskRow(
+                        icon: Icons.folder_outlined,
+                        label: LocaleKeys.timerSelectTask.tr(),
+                      )
+                    : _TaskRow(
+                        icon: Icons.folder_outlined,
+                        label: selectedTask.title,
+                        caption: LocaleKeys.timerSelectedTaskLabel.tr(),
+                      ),
+              ),
+              const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: AppColors.textSecondary,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TaskPickerSheet extends StatelessWidget {
+  const _TaskPickerSheet({required this.tasks, required this.selectedTaskId});
+
+  final List<TaskItem> tasks;
+  final String? selectedTaskId;
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.of(context).padding.bottom;
+
+    return SafeArea(
+      bottom: false,
+      child: Container(
+        // Capped so a long task list scrolls within the sheet instead of
+        // pushing the sheet itself (and the tapped row) around as it opens.
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.75,
+        ),
+        decoration: const BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              width: 36,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppColors.textSecondary.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  LocaleKeys.timerSelectTask.tr(),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
                   ),
-                )
-                .toList();
-          },
-          items: tasks
-              .map(
-                (task) =>
-                    DropdownMenuItem(value: task.id, child: Text(task.title)),
-              )
-              .toList(),
-          onChanged: enabled
-              ? (id) {
-                  if (id == null) return;
-                  onChanged(tasks.firstWhere((task) => task.id == id));
-                }
-              : null,
+                ),
+              ),
+            ),
+            Flexible(
+              child: ListView.separated(
+                shrinkWrap: true,
+                padding: EdgeInsets.only(bottom: 8 + bottomInset),
+                itemCount: tasks.length,
+                separatorBuilder: (context, index) => const Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Color(0x11000000),
+                ),
+                itemBuilder: (context, index) {
+                  final task = tasks[index];
+                  final isSelected = task.id == selectedTaskId;
+                  return InkWell(
+                    onTap: () => Navigator.of(context).pop(task),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              task.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: isSelected
+                                    ? FontWeight.w700
+                                    : FontWeight.w500,
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
+                          if (isSelected)
+                            const Icon(
+                              Icons.check_rounded,
+                              color: AppColors.primary,
+                              size: 20,
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
